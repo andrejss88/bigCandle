@@ -9,6 +9,15 @@
 //|   Trading conditions                                             |
 //+------------------------------------------------------------------+
 
+bool checkGeneralTradeConditionsMet() {
+  Print("Checking for general conditions before trading...");
+  return (
+    thereIsNoOpenTrade() &&
+    isGoodDayToTrade() &&
+    isGoodTimeToTrade()
+  ) ? true : false; // false if at least one fails
+}
+
 bool thereIsNoOpenTrade(){
    return m_Position.Select(current_symbol) ? false : true;
 }
