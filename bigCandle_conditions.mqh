@@ -13,18 +13,23 @@ bool checkGeneralTradeConditionsMet() {
   Print("Checking for general conditions before trading...");
   
   if(thereIsNoOpenTrade()
-    && isGoodDayToTrade() && isGoodTimeToTrade() /* */ ){
-    Print("There is no open Trade.");
+    && isGoodDayToTrade() /* &&   isGoodTimeToTrade() */ ){
     return true;
     } else {
-    Print("There is an open position already. Will not trade.");
+    
     return false;
     }
 
 }
 
 bool thereIsNoOpenTrade(){
-   return m_Position.Select(current_symbol) ? false : true;
+   if(m_Position.Select(current_symbol)){
+     Print("There is an open position already. Will not trade.");
+     return false;
+   } else {
+    Print("There is no open Trade.");
+    return true;
+   }
 }
 
 bool isGoodDayToTrade(){
@@ -49,7 +54,7 @@ bool isGoodDayToTrade(){
 bool isGoodTimeToTrade() {
    MqlDateTime time;
    TimeCurrent(time);
-   int tradingStartHour = 2;
+   int tradingStartHour = 7;
    int tradingEndHour = 20;
    int current_hour = time.hour;
    Print("Hour of day that just started: " + current_hour);
