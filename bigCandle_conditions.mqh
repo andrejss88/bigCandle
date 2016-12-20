@@ -11,11 +11,16 @@
 
 bool checkGeneralTradeConditionsMet() {
   Print("Checking for general conditions before trading...");
-  return (
-    thereIsNoOpenTrade() &&
-    isGoodDayToTrade() &&
-    isGoodTimeToTrade()
-  ) ? true : false; // false if at least one fails
+  
+  if(thereIsNoOpenTrade()
+    && isGoodDayToTrade() && isGoodTimeToTrade() /* */ ){
+    Print("There is no open Trade.");
+    return true;
+    } else {
+    Print("There is an open position already. Will not trade.");
+    return false;
+    }
+
 }
 
 bool thereIsNoOpenTrade(){
@@ -31,11 +36,11 @@ bool isGoodDayToTrade(){
          case 1: // Monday
 		   case 5: // Friday
 		   case 6: // Saturday
-		   Print("Today is: " + weekDay + "th day of the week (Sunday=0),so not a good day to trade");
+		   Print("Today is: " + weekDay + "th day of the week (Monday=1 ... Saturday = 6 ... Sunday=0),so not a good day to trade");
             return false; // = bad day to trade
             break;
          default:
-          Print("Today is: " + weekDay + "th day of the week (Sunday=0),so a good day to trade");
+          Print("Today is: " + weekDay + "nd/rd day of the week (Monday=1 ... Saturday = 6 ... Sunday=0),so a good day to trade");
             return true;
             break;
         }
@@ -48,7 +53,14 @@ bool isGoodTimeToTrade() {
    int tradingEndHour = 20;
    int current_hour = time.hour;
    Print("Hour of day that just started: " + current_hour);
-   return (current_hour >= tradingStartHour && current_hour <= tradingEndHour)? true : false ;
+   
+   if(current_hour >= tradingStartHour && current_hour <= tradingEndHour){
+      Print("Now is a good time to trade");
+      return true;
+   } else {
+      Print("Now is NOT a good time to trade");
+      return false;
+   }
 }
 
 
