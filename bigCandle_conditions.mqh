@@ -13,7 +13,7 @@ bool checkGeneralTradeConditionsMet() {
   Print("Checking for general conditions before trading...");
   
   if(thereIsNoOpenTrade()
-    && isGoodDayToTrade() /* &&   isGoodTimeToTrade() */ ){
+     /* && isGoodDayToTrade() &&   isGoodTimeToTrade() */ ){
     return true;
     } else {
     
