@@ -24,17 +24,17 @@ bool checkGeneralTradeConditionsMet(MqlRates & barRates[]) {
 }
 
 bool candleIsBigEnough(MqlRates & barRates[], double minCandleSize){
-   Print("Checking if 'Big' candle is big enough ");
    double lastBarBody = calculateLastClosedBarBodySize(barRates); // in Pips
-   double lastBarBodyInPips = lastBarBody*10000;
-   Print("Big bar body size is: " + lastBarBodyInPips );
+   double lastBarBodyInPips = lastBarBody * gbpusdMultiplier;
+   Print("Checking if 'Big' candle is big enough." + 
+   "Min candleSize is set to: " + minCandleSize + ". Big bar body size is: " + lastBarBodyInPips );
    
    if(lastBarBodyInPips > minCandleSize) {
    Print("Candle is really big enough to trade;");
    return true;
    
    } else {
-   Print("Actually, it's too small. Let's not trade");
+   Print("Candle is actually too small. Will not trade");
    return false;
    }
 }
@@ -65,7 +65,8 @@ bool thereIsNoOpenTrade(){
  * Checks if trading is allowed on specific days
  * Returns: true if attempt to trade is within allowed range
  */
-bool isGoodDayToTrade(){
+bool isGoodDayToTrade(){ // Probably will not need this as I filter out fake Big candles  
+                        // Although Sunday/Monday morning trades seem to be a bitch
    MqlDateTime time;
    TimeCurrent(time);
    int weekDay = time.day_of_week;
@@ -87,7 +88,7 @@ bool isGoodDayToTrade(){
  * Checks if trading is allowed during specific times
  * Returns: true if attempt to trade is within allowed range
  */
-bool isGoodTimeToTrade() {
+bool isGoodTimeToTrade() { // Probably will not need this as I filter out fake Big candles
    MqlDateTime time;
    TimeCurrent(time);
    int tradingStartHour = 7;
