@@ -9,11 +9,12 @@
 //|   Trading conditions                                             |
 //+------------------------------------------------------------------+
 
-bool checkGeneralTradeConditionsMet() {
+bool checkGeneralTradeConditionsMet(MqlRates & barRates[]) {
   Print("Checking for general conditions before trading...");
   
   if(thereIsNoOpenTrade()
-     /* && isGoodDayToTrade() &&   isGoodTimeToTrade() */ ){
+      && candleIsBigEnough(barRates, minBigCandleBarSize)
+    /* && isGoodDayToTrade()  &&   isGoodTimeToTrade()/*  */ ){
     return true;
     } else {
     
@@ -21,6 +22,29 @@ bool checkGeneralTradeConditionsMet() {
     }
 
 }
+
+bool candleIsBigEnough(MqlRates & barRates[], double minCandleSize){
+   Print("Checking if 'Big' candle is big enough ");
+   double lastBarBody = calculateLastClosedBarBodySize(barRates); // in Pips
+   double lastBarBodyInPips = lastBarBody*10000;
+   Print("Big bar body size is: " + lastBarBodyInPips );
+   
+   if(lastBarBodyInPips > minCandleSize) {
+   Print("Candle is really big enough to trade;");
+   return true;
+   
+   } else {
+   Print("Actually, it's too small. Let's not trade");
+   return false;
+   }
+}
+
+/**
+ * For comparison with other candles
+ */
+double calculateLastClosedBarBodySize(MqlRates & barRates[]) {
+  return NormalizeDouble(MathAbs(barRates[1].open - barRates[1].close), 5);
+} 
 
 /*
  * Checks if there are ANY open trades
