@@ -13,8 +13,8 @@ bool checkGeneralTradeConditionsMet(MqlRates & barRates[]) {
   Print("Checking for general conditions before trading...");
   
   if(thereIsNoOpenTrade()
-      && candleIsBigEnough(barRates, minBigCandleBarSize)
-    /* && isGoodDayToTrade()  &&   isGoodTimeToTrade()/*  */ ){
+      && candleIsBigEnough(barRates, minBigCandleBarSize)  /* &&  isGoodTimeToTrade() /*  */
+    /* && isGoodDayToTrade()  */     ){
     return true;
     } else {
     
@@ -91,8 +91,8 @@ bool isGoodDayToTrade(){ // Probably will not need this as I filter out fake Big
 bool isGoodTimeToTrade() { // Probably will not need this as I filter out fake Big candles
    MqlDateTime time;
    TimeCurrent(time);
-   int tradingStartHour = 7;
-   int tradingEndHour = 20;
+   int tradingStartHour = 8;
+   int tradingEndHour = 19;
    int current_hour = time.hour;
    Print("Hour of day that just started: " + current_hour);
    
