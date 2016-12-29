@@ -12,12 +12,10 @@
 bool checkGeneralTradeConditionsMet(MqlRates & barRates[]) {
   Print("Checking for general conditions before trading...");
   
-  if(thereIsNoOpenTrade()
-      && candleIsBigEnough(barRates, minBigCandleBarSize)  /* &&  isGoodTimeToTrade() /*  */
-    /* && isGoodDayToTrade()  */     ){
+  if(thereIsNoOpenTrade() && candleIsBigEnough(barRates, minBigCandleBarSize)  && isGoodDayOfYearToTrade()  
+     /* &&  isGoodTimeToTrade()   && isGoodDayToTrade()  */ ){
     return true;
     } else {
-    
     return false;
     }
 
@@ -60,6 +58,25 @@ bool thereIsNoOpenTrade(){
     return true;
    }
 }
+/*
+ * Checks if trading is allowed on specific days of the year
+ * Returns: true if attempt to trade is within allowed range
+ */
+bool isGoodDayOfYearToTrade(){  
+                 
+   MqlDateTime time;
+   TimeCurrent(time);
+   int dayOfYear = time.day_of_year;
+   if(dayOfYear > 14 && dayOfYear < 334 ){
+    Print("Day of the Year number: " + dayOfYear + ". It's OK to trade.");
+      return true;
+   } else {
+     Print("Day of the Year number: " + dayOfYear + ". It's NOT ok to trade.");
+      return false;
+   }     
+}
+
+
 
 /*
  * Checks if trading is allowed on specific days
